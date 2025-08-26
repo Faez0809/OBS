@@ -19,8 +19,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBook } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faTwitter, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 
+import { useNavigate } from "react-router-dom";
+
+
+
+
 
 function BookCafe() {
+
+const navigate = useNavigate();
+
+
   return (
 
       <body>
@@ -53,6 +62,24 @@ function BookCafe() {
               <li id="Loginn">
                 <a href="./login">Login</a>
               </li>
+               
+            <li id="Logoutt">
+      <a
+        href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          localStorage.removeItem("token");
+          alert("You have been logged out.");
+          navigate("/login");
+        }}
+      >
+        Logout
+      </a>
+    </li>
+
+
+
+
             </ul>
             <a href="#" className="siteName">
               Book Cafe
