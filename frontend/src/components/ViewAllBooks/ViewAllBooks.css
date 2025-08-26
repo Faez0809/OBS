@@ -1,0 +1,134 @@
+/* Container for all books */
+.view-all-books {
+  font-family: 'Arial', sans-serif;
+  padding: 20px;
+  background-color: #f4f4f9;
+  color: #333;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Cart summary at the top */
+.cart-summary {
+
+
+  padding: 10px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 20px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.cart-summary:hover {
+ box-shadow: #777;
+}
+
+/* Main heading */
+h1 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 36px;
+  color: #333;
+}
+
+/* Grid container for book cards */
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* Individual book card styling */
+.book-card {
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+}
+
+.book-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.book-card h2 {
+  font-size: 24px;
+  color: #333;
+  margin: 10px 0;
+}
+
+.book-card h3 {
+  font-size: 18px;
+  color: #666;
+  margin: 5px 0;
+}
+
+.book-card p {
+  font-size: 14px;
+  color: #777;
+  line-height: 1.6;
+  margin: 10px 0;
+}
+
+.book-card p strong {
+  color: #333;
+}
+
+/* Add to Cart button styling */
+.book-card button {
+  background-color: #ff6f61;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.book-card button:hover {
+  background-color: #ff4b3a;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  /* Adjustments for mobile view */
+  h1 {
+    font-size: 28px;
+  }
+
+  .cart-summary {
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+
+  .book-card h2 {
+    font-size: 20px;
+  }
+
+  .book-card h3 {
+    font-size: 16px;
+  }
+
+  .book-card p {
+    font-size: 13px;
+  }
+
+  .book-card button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}

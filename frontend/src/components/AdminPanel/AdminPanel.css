@@ -1,0 +1,211 @@
+.topAdmin{
+  margin-top: 15px;
+margin-bottom: 0px;
+}
+
+
+/* Admin panel container */
+.admin-panel {
+  display: flex;
+  max-width: 1200px;
+  margin: 40px auto;
+  margin-top: 0px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Left section for adding/editing books */
+.admin-panel form {
+  width: 50%;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+@media screen and (max-width: 768px){
+  .admin-panel form {
+    width: 100%;
+  }
+  
+}
+
+.admin-panel h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #4CAF50;
+  text-align: center;
+  border-bottom: 2px solid #4CAF50;
+  padding-bottom: 10px;
+}
+
+.admin-panel form div {
+  margin-bottom: 15px;
+}
+
+.admin-panel form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.admin-panel form input[type="text"],
+.admin-panel form input[type="date"],
+.admin-panel form textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  box-sizing: border-box;
+  background-color: #f4f4f4;
+  transition: border-color 0.3s;
+}
+
+.admin-panel form input[type="text"]:focus,
+.admin-panel form input[type="date"]:focus,
+.admin-panel form textarea:focus {
+  border-color: #4CAF50;
+}
+
+.admin-panel form textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.admin-panel form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 15px;
+}
+
+.admin-panel form button:hover {
+  background-color: #45a049;
+}
+
+/* Right section for viewing, updating, and deleting books */
+.book-list-container {
+  width: 50%;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow-y: auto;
+  max-height: 800px;
+}
+
+.admin-panel h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.admin-panel ul {
+  width: 50%;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+@media screen and (max-width: 768px){
+  .admin-panel ul {
+    width: 100%;
+  }
+  
+}
+
+.admin-panel li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.3s ease;
+}
+
+.admin-panel li:last-child {
+  border-bottom: none;
+}
+
+.admin-panel li:hover {
+  background-color: #f9f9f9;
+}
+
+.admin-panel li strong {
+  font-size: 18px;
+  flex: 1;
+  color: #4CAF50;
+}
+
+.admin-panel li span {
+  font-size: 16px;
+  color: #555;
+  flex: 2;
+}
+
+.admin-panel li button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.admin-panel li button:first-child {
+  background-color: #ff6f61;
+}
+
+.admin-panel li button:hover {
+  background-color: #0056b3;
+}
+
+.admin-panel li button:first-child:hover {
+  background-color: #ff4b3a;
+}
+
+@media (max-width: 768px) {
+  /* Adjust layout for smaller screens */
+  .admin-panel {
+    flex-direction: column;
+  }
+
+  .admin-panel form {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .admin-panel h1, .admin-panel h2 {
+    font-size: 22px;
+  }
+
+  .admin-panel li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-panel li button {
+    margin-top: 10px;
+    margin-left: 0;
+  }
+}
