@@ -30,7 +30,9 @@ const ViewAllBooks = () => {
       <div className="cart-summary" onClick={toggleCart}>
         🛒 Cart: {cart.length} items
       </div>
-      {showCart && <Cart />} {/* Show Cart component if showCart is true */}
+      
+      {showCart && <Cart onClose={() => setShowCart(false)} />} 
+      {/* Show Cart component if showCart is true  and This lets the Cart tell the parent to hide itself.*/}
       <h1>All Books</h1>
       <div className="book-list">
         {books.map((book) => (
