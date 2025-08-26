@@ -29,6 +29,8 @@ function BookCafe() {
 
 const navigate = useNavigate();
 
+// ✅ check auth once to decide which nav items to show
+  const isLoggedIn = !!localStorage.getItem("token");
 
   return (
 
@@ -56,26 +58,35 @@ const navigate = useNavigate();
               <li>
                 <a href="#writer">Writer</a>
               </li>
-              <li id="Registerr">
-                <a href="./register">Register</a>
+
+              {/* 👇 show Register/Login only when NOT logged in */}
+            {!isLoggedIn && (
+              <>
+                <li id="Registerr">
+                  <a href="./register">Register</a>
+                </li>
+                <li id="Loginn">
+                  <a href="./login">Login</a>
+                </li>
+              </>
+            )}
+
+            {/* 👇 show Logout only when logged in (as a link) */}
+            {isLoggedIn && (
+              <li id="Logoutt">
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    localStorage.removeItem("token");
+                    alert("You have been logged out.");
+                    navigate("/login");
+                  }}
+                >
+                  Logout
+                </a>
               </li>
-              <li id="Loginn">
-                <a href="./login">Login</a>
-              </li>
-               
-            <li id="Logoutt">
-      <a
-        href="#"
-        onClick={(e) => {
-          e.preventDefault();
-          localStorage.removeItem("token");
-          alert("You have been logged out.");
-          navigate("/login");
-        }}
-      >
-        Logout
-      </a>
-    </li>
+            )}
 
 
 
