@@ -121,6 +121,6 @@ const Cart = () => {
       </button>
     </div>
   );
-};
+}; 
 
 export default Cart;
