@@ -1,4 +1,7 @@
-import React from "react";
+//src/components/Home.jsx
+
+
+//import React from "react";
 import "./style.css";
 import FaezImg from "./random/me.jpg";
 import shamsul from "./random/shamsul arefin.jpg";
@@ -21,11 +24,20 @@ import { faFacebook, faTwitter, faInstagram, faLinkedin } from '@fortawesome/fre
 
 import { useNavigate } from "react-router-dom";
 
+import React, { useContext, useState } from "react";
+import { CartContext } from "../context/CartContext";
+import Cart from "./Cart/Cart";
 
 
 
 
 function BookCafe() {
+ const { addToCart } = useContext(CartContext);
+const { cart } = useContext(CartContext);
+const [showCart, setShowCart] = useState(false);
+
+const toggleCart = () => setShowCart((prev) => !prev);
+
 
 const navigate = useNavigate();
 
@@ -89,13 +101,30 @@ const navigate = useNavigate();
             )}
 
 
-
+         <li 
+  onClick={toggleCart} 
+  style={{ 
+    cursor: "pointer", 
+    color: "#fff",          // white text so it’s visible on dark nav background
+    fontWeight: "500", 
+    marginLeft: "1rem",     // spacing from other nav items
+    display: "flex", 
+    alignItems: "center" 
+  }}
+>
+  🛒 <span style={{ marginLeft: "6px" }}>Cart: {cart.length} items</span>
+</li>
 
             </ul>
             <a href="#" className="siteName">
               Book Cafe
             </a>
           </nav>
+          
+           {showCart && <Cart onClose={() => setShowCart(false)} />}
+
+
+
 
           <section className="hero" id="home">
             <div className="hero-overlay"></div>
@@ -126,9 +155,7 @@ const navigate = useNavigate();
                 Uncover the top picks in our collection—an exclusive selection
                 of the most enjoyable and exciting reads!
               </p>
-              <a href="#" className="btn ">
-                Read more
-              </a>
+              
               {/* <button type="button" class="btn ">Success</button> */}
             </div>
             <div className="box">
@@ -138,9 +165,7 @@ const navigate = useNavigate();
                 Swift deliveries, because your next great read shouldn't wait.
                 Get your books in a flash!
               </p>
-              <a href="#" className="btn">
-                Read more
-              </a>
+              
             </div>
             <div className="box">
               <img src={payment} alt="payment" />
@@ -149,9 +174,7 @@ const navigate = useNavigate();
                 Quick and easy checkout. Spend less time paying, more time
                 reading. Simple as that
               </p>
-              <a href="#" className="btn">
-                Read more
-              </a>
+             
             </div>
           </div>
         </section>
@@ -173,9 +196,27 @@ const navigate = useNavigate();
                   <i className="fa fa-star"></i>
                   <i className="fa fa-star"></i>
                 </div>
-                <a href="#" className="btn">
-                  Add to cart
-                </a>
+
+
+                <a
+          href="#"
+          className="btn"
+          onClick={(e) => {
+            e.preventDefault();
+            addToCart({
+              _id: "static-ckt",                         // any unique id
+              title: "Electronic Devices and Circuit Theory",
+              author: "Boylestad & Nashelsky",
+              price: 450,
+              coverImage: ckt,
+            });
+          }}
+        >
+          Add to cart
+        </a>
+
+
+
               </div>
               <div className="box">
                 <img src={sadiku} alt="sadiku" />
@@ -188,10 +229,28 @@ const navigate = useNavigate();
                   <i className="fa fa-star"></i>
                   <i className="fa fa-star"></i>
                 </div>
-                <a href="#" className="btn">
-                  Add to cart
-                </a>
+
+                <a
+          href="#"
+          className="btn"
+          onClick={(e) => {
+            e.preventDefault();
+            addToCart({
+              _id: "static-fec",
+              title: "Fundamentals of Electric Circuits",
+              author: "Alexander & Sadiku",
+              price: 500,
+              coverImage: sadiku,
+            });
+          }}
+        >
+          Add to cart
+        </a>
+
+
+
               </div>
+
               <div className="box">
                 <img src={Ansi} alt="Ansi" />
                 <h3>Ansi C</h3>
@@ -203,9 +262,24 @@ const navigate = useNavigate();
                   <i className="fa fa-star"></i>
                   <i className="fa fa-star"></i>
                 </div>
-                <a href="#" className="btn">
-                  Add to cart
-                </a>
+
+                <a
+          href="#"
+          className="btn"
+          onClick={(e) => {
+            e.preventDefault();
+            addToCart({
+              _id: "static-ansi",
+              title: "Ansi C",
+              author: "E. Balagurusamy",
+              price: 250,
+              coverImage: Ansi,
+            });
+          }}
+        >
+          Add to cart
+        </a>
+
               </div>
               {/* Add more product boxes as needed */}
             </div>
