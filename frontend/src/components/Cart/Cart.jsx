@@ -1,4 +1,3 @@
-// src/components/Cart/Cart.jsx
 import React, { useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import { CartContext } from "../../context/CartContext";
@@ -6,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./Cart.css";
 import { loadStripe } from "@stripe/stripe-js";
 
-const apiURL = import.meta.env.VITE_API_URL; // e.g., http://localhost:3001/api/payment
+const apiURL = import.meta.env.VITE_API_URL;
 
 const Cart = ({ onClose }) => {
   const {
@@ -15,21 +14,44 @@ const Cart = ({ onClose }) => {
     increaseQuantity,
     decreaseQuantity,
     getTotalPrice,
+    setCart,
   } = useContext(CartContext);
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Optional: auto-close the cart UI when it becomes empty (if parent provided onClose)
   useEffect(() => {
     if (cart.length === 0 && typeof onClose === "function") {
       onClose();
     }
   }, [cart.length, onClose]);
 
+  // Handle quantity change directly from the input
+  const handleQuantityChange = (e, bookId) => {
+    const value = e.target.value.trim();  // Trim spaces if any
+
+    if (value === "") {
+      // If the input is cleared (backspace), set quantity to 0
+      setCart((prevCart) =>
+        prevCart.map((item) =>
+          item.book._id === bookId ? { ...item, quantity: "" } : item
+        )
+      );
+    } else {
+      const numericValue = parseInt(value, 10);  // Parse the input as a number
+      if (!isNaN(numericValue) && numericValue >= 0) {
+        // If the value is valid (positive number), update the cart with the new quantity
+        setCart((prevCart) =>
+          prevCart.map((item) =>
+            item.book._id === bookId ? { ...item, quantity: numericValue } : item
+          )
+        );
+      }
+    }
+  };
+
   const handleCheckout = async () => {
     try {
-      // Require auth before hitting protected payment route
       const token = localStorage.getItem("token");
       if (!token) {
         alert("You must login first");
@@ -37,20 +59,17 @@ const Cart = ({ onClose }) => {
         return;
       }
 
-      const stripe = await loadStripe(
-        import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
-      );
+      const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
       const response = await fetch(`${apiURL}/create-checkout-session`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // protected route
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ products: cart }),
       });
 
-      // If token invalid/expired → push to login
       if (response.status === 401 || response.status === 403) {
         alert("Session expired. Please login again.");
         navigate("/login", { state: { from: location } });
@@ -94,15 +113,21 @@ const Cart = ({ onClose }) => {
                   <h3>{item.book.title}</h3>
                   <p>by {item.book.author}</p>
                   <p>Price: {item.book.price.toFixed(2)} Tk</p>
+
                   <div className="quantity-controls">
-                    <button onClick={() => decreaseQuantity(item.book._id)}>
-                      -
-                    </button>
-                    <span className="quantity">{item.quantity}</span>
-                    <button onClick={() => increaseQuantity(item.book._id)}>
-                      +
-                    </button>
+                    <button onClick={() => decreaseQuantity(item.book._id)}>-</button>
+                    
+                    <input
+                      type="number"
+                      value={item.quantity}
+                      min="0"                  // Allow 0 as the minimum value
+                      onChange={(e) => handleQuantityChange(e, item.book._id)}  // Handle input change
+                      className="quantity-input"  // Custom styling for the input field
+                    />
+                    
+                    <button onClick={() => increaseQuantity(item.book._id)}>+</button>
                   </div>
+
                   <button
                     className="remove-btn"
                     onClick={() => removeFromCart(item.book._id)}
@@ -114,7 +139,6 @@ const Cart = ({ onClose }) => {
             ))}
           </div>
 
-          {/* Show summary + checkout only when cart has items */}
           <div className="cart-summary">
             <h3>Total Price: {getTotalPrice().toFixed(2)} Tk</h3>
           </div>
@@ -133,7 +157,7 @@ const Cart = ({ onClose }) => {
 };
 
 Cart.propTypes = {
-  onClose: PropTypes.func, // optional; parent can use to hide the cart when empty
+  onClose: PropTypes.func,
 };
 
 export default Cart;

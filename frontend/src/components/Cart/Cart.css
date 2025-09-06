@@ -129,3 +129,13 @@
 .checkout-btn:hover {
   background-color: #218838;
 }
+
+.quantity-input {
+  width: 50px;  /* Set a fixed width that fits 2 digits */
+  text-align: center;  /* Centers the number inside the input */
+  padding: 5px;
+  font-size: 1rem;
+  margin: 0 5px;  /* Space between input and buttons */
+  border-radius: 5px;
+  border: 1px solid #ccc;  /* Light border for clarity */
+}
