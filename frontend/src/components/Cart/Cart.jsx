@@ -116,15 +116,15 @@ const Cart = ({ onClose }) => {
 
                   <div className="quantity-controls">
                     <button onClick={() => decreaseQuantity(item.book._id)}>-</button>
-                    
+
                     <input
-                      type="number"
-                      value={item.quantity}
-                      min="0"                  // Allow 0 as the minimum value
+                      type="text"                          // Changed from number to text
+                      inputMode="numeric"                   // Makes the keyboard show numbers (on mobile)
+                      value={item.quantity === "" ? "" : item.quantity}  // Allow empty if cleared
                       onChange={(e) => handleQuantityChange(e, item.book._id)}  // Handle input change
                       className="quantity-input"  // Custom styling for the input field
                     />
-                    
+
                     <button onClick={() => increaseQuantity(item.book._id)}>+</button>
                   </div>
 
