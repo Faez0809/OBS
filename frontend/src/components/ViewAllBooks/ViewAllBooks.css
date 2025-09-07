@@ -4,14 +4,12 @@
   padding: 20px;
   background-color: #f4f4f9;
   color: #333;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 1200px; /* Limit the width of the content */
+  margin: 0 auto; /* Center the content */
 }
 
 /* Cart summary at the top */
 .cart-summary {
-
-
   padding: 10px 20px;
   font-size: 18px;
   font-weight: bold;
@@ -24,7 +22,7 @@
 }
 
 .cart-summary:hover {
- box-shadow: #777;
+  box-shadow: #777;
 }
 
 /* Main heading */
@@ -35,10 +33,24 @@ h1 {
   color: #333;
 }
 
-/* Grid container for book cards */
-.book-list {
+/* Grid container for book sections */
+.book-section {
+  margin-bottom: 40px;
+}
+
+/* Category section title */
+.section-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Grid layout for each section of books */
+.book-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));  /* Adjusts based on screen size */
   gap: 20px;
 }
 
@@ -102,33 +114,4 @@ h1 {
 .book-card button:hover {
   background-color: #ff4b3a;
   transform: translateY(-2px);
-}
-
-@media (max-width: 768px) {
-  /* Adjustments for mobile view */
-  h1 {
-    font-size: 28px;
-  }
-
-  .cart-summary {
-    font-size: 16px;
-    padding: 8px 16px;
-  }
-
-  .book-card h2 {
-    font-size: 20px;
-  }
-
-  .book-card h3 {
-    font-size: 16px;
-  }
-
-  .book-card p {
-    font-size: 13px;
-  }
-
-  .book-card button {
-    font-size: 14px;
-    padding: 8px 16px;
-  }
 }

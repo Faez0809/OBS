@@ -1,3 +1,6 @@
+//AdminPanel.jsx
+
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./AdminPanel.css";
@@ -9,11 +12,11 @@ const AdminPanel = () => {
   const [description, setDescription] = useState("");
   const [publishDate, setPublishDate] = useState("");
   const [coverImage, setCoverImage] = useState("");
+  const [category, setCategory] = useState("");  // Add category state
+  const [price, setPrice] = useState(""); 
   const [editingBook, setEditingBook] = useState(null);
-  const [price, setPrice] = useState(""); // Add this state
 
   useEffect(() => {
-    // Fetch all books on component mount
     const fetchBooks = async () => {
       try {
         const res = await axios.get("http://127.0.0.1:3001/api/books/list");
@@ -36,6 +39,7 @@ const AdminPanel = () => {
         publishDate,
         coverImage,
         price,
+        category,  // Ensure category is included here
       };
       if (editingBook) {
         // Update the book if in editing mode
@@ -57,6 +61,8 @@ const AdminPanel = () => {
       setDescription("");
       setPublishDate("");
       setCoverImage("");
+      setCategory("");  // Clear the category
+      setPrice("");
 
       // Refresh the list of books
       const res = await axios.get("http://127.0.0.1:3001/api/books/list");
@@ -73,6 +79,8 @@ const AdminPanel = () => {
     setDescription(book.description);
     setPublishDate(book.publishDate);
     setCoverImage(book.coverImage);
+    setCategory(book.category);  // Set the selected category
+    setPrice(book.price);
     setEditingBook(book);
   };
 
@@ -98,8 +106,7 @@ const AdminPanel = () => {
       <div className="admin-panel">
         <form onSubmit={handleSubmit}>
           <div>
-            {" "}
-            <h1> {editingBook ? "Edit Book" : "Add a New Book"}</h1>
+            <h1>{editingBook ? "Edit Book" : "Add a New Book"}</h1>
           </div>
           <div>
             <label>Title:</label>
@@ -151,6 +158,24 @@ const AdminPanel = () => {
               onChange={(e) => setCoverImage(e.target.value)}
             />
           </div>
+
+          {/* Category Select Dropdown */}
+          <div>
+            <label>Category:</label>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              required
+            >
+              <option value="">Select Category</option>
+              <option value="Fiction & Literature">Fiction & Literature</option>
+              <option value="Mystery & Thrillers">Mystery & Thrillers</option>
+              <option value="Skill Development">Skill Development</option>
+              <option value="Novels">Novels</option>
+              <option value="All Books">All Books</option>
+            </select>
+          </div>
+
           <button type="submit">
             {editingBook ? "Update Book" : "Add Book"}
           </button>
