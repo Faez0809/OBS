@@ -1,25 +1,24 @@
-//bookRoutes.js
-
 const express = require("express");
+const router = express.Router();
+const verifyToken = require("../middleware/authMiddleware");
 const {
-  addBook,
-  getAllBooks,
-  updateBook,
-  deleteBook,
+  addBook,
+  getAllBooks,
+  updateBook,
+  deleteBook,
+  getBookById,
+  addBookReview,
 } = require("../controllers/bookController");
 
-const router = express.Router();
-
-// Route to add a new book
+// More specific routes should come first
 router.post("/add", addBook);
-
-// Route to get all books
+router.post("/:id/reviews", verifyToken, addBookReview);
 router.get("/list", getAllBooks);
 
-// Route to update a book by ID
+// More general routes come after
+router.get("/:id", getBookById);
 router.put("/:id", updateBook);
-
-// Route to delete a book by ID
 router.delete("/:id", deleteBook);
+
 
 module.exports = router;

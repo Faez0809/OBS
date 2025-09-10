@@ -1,0 +1,4 @@
+.rating { display: flex; align-items: center; gap: 6px; }
+.star { color: #bbb; line-height: 1; }
+.star.filled { color: #f5a623; }
+.rating .count { font-size: 0.9rem; color: #666; }

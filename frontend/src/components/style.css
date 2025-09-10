@@ -33,7 +33,6 @@ a{
     background-position: center;
     background-color: #231e1e;
     position: relative;
-   
 
     background-position: right bottom;
 }
@@ -205,9 +204,9 @@ nav{
 }
 .product .product-slider .box{
     background-color: #fff;
-    border-radius: .5rem;
+    border-radius: .5rem;         /* size & radius kept as before */
     text-align: center;
-    padding: 3rem 2rem;
+    padding: 3rem 2rem;           /* kept as before */
     outline: .1rem solid rgba(0, 0, 0, .1);
     outline-offset: -1rem;
     text-align: center;
@@ -219,7 +218,7 @@ nav{
     outline: .1rem solid #000;
 }
 .product .product-slider .box img{
-    height: 15rem;
+    height: 15rem;                /* size kept as before */
 }
 .product .product-slider .box  h3{
     font-size: 1.5rem;
@@ -230,9 +229,10 @@ nav{
     columns: #666;
     padding: .5rem 0;
 }
+/* ⭐ Make stars match other cards (amber) */
 .product .product-slider .box .stars i{
     font-size: 1.5rem;
-    color: orangered;
+    color: #f59e0b;               /* amber like All Books cards */
     padding: .5rem 0;
 }
 /* catagaries */

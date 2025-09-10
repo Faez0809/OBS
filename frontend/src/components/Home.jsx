@@ -1,6 +1,6 @@
 // src/components/Home.jsx
 
-//import React from "react";
+import React, { useContext, useState, useEffect, useMemo } from "react";
 import "./style.css";
 import FaezImg from "./random/me.jpg";
 import shamsul from "./random/shamsul arefin.jpg";
@@ -16,35 +16,118 @@ import payment from "./random/payment.webp";
 import delivary from "./random/delivary.avif";
 import Origin from "./random/Origin.jpg";
 import logo from "./random/DisplayPhoto.jpg";
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBook } from '@fortawesome/free-solid-svg-icons';
-import { faFacebook, faTwitter, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { Link, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBook } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFacebook,
+  faTwitter,
+  faInstagram,
+  faLinkedin,
+} from "@fortawesome/free-brands-svg-icons";
+import axios from "axios";
 
-import { useNavigate } from "react-router-dom";
-
-import React, { useContext, useState } from "react";
 import { CartContext } from "../context/CartContext";
 import Cart from "./Cart/Cart";
 
-
-
+/** Tiny star renderer (0..5) */
+const Stars = ({ value = 0 }) => {
+  const full = Math.floor(value);
+  const half = value - full >= 0.5 ? 1 : 0;
+  const empty = 5 - full - half;
+  return (
+    <span aria-label={`rating ${value} out of 5`} className="stars-inline">
+      {"★".repeat(full)}
+      {half ? "☆" : ""}
+      {"☆".repeat(empty)}
+    </span>
+  );
+};
 
 function BookCafe() {
-  const { addToCart } = useContext(CartContext);
-  const { cart } = useContext(CartContext);
+  const { addToCart, cart } = useContext(CartContext);
   const [showCart, setShowCart] = useState(false);
+  const [books, setBooks] = useState([]);
+  const navigate = useNavigate();
+
+  // auth flag for nav
+  const isLoggedIn = !!localStorage.getItem("token");
+
+  // fetch all books once, so "featured" can pull real rating/review/ids
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const res = await axios.get("http://127.0.0.1:3001/api/books/list");
+        setBooks(res.data || []);
+      } catch (e) {
+        console.error("Home: could not load books list", e);
+        setBooks([]);
+      }
+    };
+    fetchBooks();
+  }, []);
 
   const toggleCart = () => setShowCart((prev) => !prev);
 
+  // Tries to find a DB book by loose title match; fallback returns null
+  const findBook = (needle) =>
+    books.find(
+      (b) =>
+        (b.title || "").toLowerCase().includes(needle.toLowerCase()) ||
+        (b.title || "").toLowerCase() === needle.toLowerCase()
+    ) || null;
 
-  const navigate = useNavigate();
+  // Prepare 3 featured items (prefer DB when available)
+  const featured = useMemo(
+    () => [
+      {
+        fallback: {
+          _id: "static-ckt",
+          title: "Electronic Devices and Circuit Theory",
+          author: "Boylestad & Nashelsky",
+          price: 450,
+          coverImage: ckt,
+        },
+        db: findBook("Electronic Devices and Circuit Theory"),
+      },
+      {
+        fallback: {
+          _id: "static-fec",
+          title: "Fundamentals of Electric Circuits",
+          author: "Alexander & Sadiku",
+          price: 500,
+          coverImage: sadiku,
+        },
+        db: findBook("Fundamentals of Electric Circuits"),
+      },
+      {
+        fallback: {
+          _id: "static-ansi",
+          title: "Ansi C",
+          author: "E. Balagurusamy",
+          price: 250,
+          coverImage: Ansi,
+        },
+        db: findBook("Ansi C"),
+      },
+    ],
+    [books]
+  );
 
-  // ✅ check auth once to decide which nav items to show
-  const isLoggedIn = !!localStorage.getItem("token");
+  const pick = (item) => item.db || item.fallback;
+
+  const handleAddToCart = (item) => {
+    const book = pick(item);
+    addToCart({
+      _id: book._id,
+      title: book.title,
+      author: book.author,
+      price: book.price,
+      coverImage: book.coverImage || book.coverImageUrl || "",
+    });
+  };
 
   return (
-
     <body>
       <section className="main">
         <nav>
@@ -70,19 +153,17 @@ function BookCafe() {
               <a href="#writer">Writer</a>
             </li>
 
-            {/* 👇 show Register/Login only when NOT logged in */}
             {!isLoggedIn && (
               <>
                 <li id="Registerr">
-                  <a href="./register">Register</a>
+                  <Link to="/register">Register</Link>
                 </li>
                 <li id="Loginn">
-                  <a href="./login">Login</a>
+                  <Link to="/login">Login</Link>
                 </li>
               </>
             )}
 
-            {/* 👇 show Logout only when logged in (as a link) */}
             {isLoggedIn && (
               <li id="Logoutt">
                 <a
@@ -99,21 +180,19 @@ function BookCafe() {
               </li>
             )}
 
-
             <li
-              onClick={toggleCart}
+              onClick={() => setShowCart((p) => !p)}
               style={{
                 cursor: "pointer",
-                color: "#fff",        // white text so it’s visible on dark nav background
+                color: "#fff",
                 fontWeight: "500",
-                marginLeft: "1rem",    // spacing from other nav items
+                marginLeft: "1rem",
                 display: "flex",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               🛒 <span style={{ marginLeft: "6px" }}>Cart: {cart.length} items</span>
             </li>
-
           </ul>
           <a href="#" className="siteName">
             Book Cafe
@@ -122,9 +201,6 @@ function BookCafe() {
 
         {showCart && <Cart onClose={() => setShowCart(false)} />}
 
-
-
-
         <section className="hero" id="home">
           <div className="hero-overlay"></div>
           <div className="hero-content">
@@ -132,12 +208,8 @@ function BookCafe() {
               Find Your <span>Ideal</span> Books Here
             </h1>
             <p className="details">
-              “A book is a gift you can open again and again.” ― Garrison
-              Keillor
+              “A book is a gift you can open again and again.” ― Garrison Keillor
             </p>
-            {/* <a href="#featured" className="btn hero-btn">
-              Explore Now
-            </a> */}
           </div>
         </section>
       </section>
@@ -151,138 +223,88 @@ function BookCafe() {
             <img src={Origin} alt="Origin" />
             <h3>Best and Cool</h3>
             <p>
-              Uncover the top picks in our collection—an exclusive selection
-              of the most enjoyable and exciting reads!
+              Uncover the top picks in our collection—an exclusive selection of the
+              most enjoyable and exciting reads!
             </p>
-
-            {/* <button type="button" class="btn ">Success</button> */}
           </div>
           <div className="box">
             <img src={delivary} alt="delivary" />
             <h3>Fast Delivery</h3>
             <p>
-              Swift deliveries, because your next great read shouldn't wait.
-              Get your books in a flash!
+              Swift deliveries, because your next great read shouldn't wait. Get your
+              books in a flash!
             </p>
-
           </div>
           <div className="box">
             <img src={payment} alt="payment" />
             <h3>Easy Payment</h3>
             <p>
-              Quick and easy checkout. Spend less time paying, more time
-              reading. Simple as that
+              Quick and easy checkout. Spend less time paying, more time reading.
+              Simple as that
             </p>
-
           </div>
         </div>
       </section>
 
+      {/* PRODUCTS (3 featured) */}
       <section className="product" id="product">
         <h1 className="heading">
           Our<span>Products</span>
         </h1>
+
         <div className="product-slider">
           <div className="wrapper">
-            <div className="box">
-              <img src={ckt} alt="ckt theory" />
-              <h3>Electronic Devices and Circuit Theory</h3>
-              <div className="price">BDT 450 taka</div>
-              <div className="stars">
-                <i className="fa fa-star"></i>
-                <i className="fa fa-star"></i>
-                <i className="fa fa-star"></i>
-                <i className="fa fa-star"></i>
-                <i className="fa fa-star"></i>
-              </div>
+            {featured.map((item) => {
+              const book = pick(item);
+              const avg = Number(book.rating || 0);
+              const count = Number(book.numReviews || 0);
+              const hasDetails = !!item.db?._id;
 
+              return (
+                <div className="box" key={book._id}>
+                  <img
+                    src={book.coverImage || book.coverImageUrl || ckt}
+                    alt={book.title}
+                  />
+                  <h3>{book.title}</h3>
+                  <div className="price">BDT {Number(book.price).toFixed(0)} taka</div>
 
-              <a
-                href="#"
-                className="btn"
-                onClick={(e) => {
-                  e.preventDefault();
-                  addToCart({
-                    _id: "static-ckt",                          // any unique id
-                    title: "Electronic Devices and Circuit Theory",
-                    author: "Boylestad & Nashelsky",
-                    price: 450,
-                    coverImage: ckt,
-                  });
-                }}
-              >
-                Add to cart
-              </a>
+                  {/* rating + count */}
+                  <div className="rating-row">
+                    <Stars value={avg} />
+                    <span className="rating-text">
+                      {avg ? avg.toFixed(1) : "0.0"} ({count})
+                    </span>
+                  </div>
 
+                  {/* details link: to real book details if we matched a DB book,
+                      otherwise send user to All Books page */}
+                  {hasDetails ? (
+                    <Link to={`/books/${item.db._id}`} className="details-link">
+                      See Details
+                    </Link>
+                  ) : (
+                    <Link to="/allbooks#all-books" className="details-link">
+                      See Details
+                    </Link>
+                  )}
 
-
-            </div>
-            <div className="box">
-              <img src={sadiku} alt="sadiku" />
-              <h3>Fundamentals of Electric Circuits</h3>
-              <div className="price">BDT 500 taka</div>
-              <div className="stars">
-                <i className="fa fa-star"></i>
-                <i className="fa fa-star"></i>
-                <i className="fa fa-star"></i>
-                <i className="fa fa-star"></i>
-                <i className="fa fa-star"></i>
-              </div>
-
-              <a
-                href="#"
-                className="btn"
-                onClick={(e) => {
-                  e.preventDefault();
-                  addToCart({
-                    _id: "static-fec",
-                    title: "Fundamentals of Electric Circuits",
-                    author: "Alexander & Sadiku",
-                    price: 500,
-                    coverImage: sadiku,
-                  });
-                }}
-              >
-                Add to cart
-              </a>
-
-
-
-            </div>
-
-            <div className="box">
-              <img src={Ansi} alt="Ansi" />
-              <h3>Ansi C</h3>
-              <div className="price">BDT 250 taka</div>
-              <div className="stars">
-                <i className="fa fa-star"></i>
-                <i className="fa fa-star"></i>
-                <i className="fa fa-star"></i>
-                <i className="fa fa-star"></i>
-                <i className="fa fa-star"></i>
-              </div>
-
-              <a
-                href="#"
-                className="btn"
-                onClick={(e) => {
-                  e.preventDefault();
-                  addToCart({
-                    _id: "static-ansi",
-                    title: "Ansi C",
-                    author: "E. Balagurusamy",
-                    price: 250,
-                    coverImage: Ansi,
-                  });
-                }}
-              >
-                Add to cart
-              </a>
-
-            </div>
-            {/* Add more product boxes as needed */}
+                  <a
+                    href="#"
+                    className="btn"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleAddToCart(item);
+                    }}
+                  >
+                    Add to cart
+                  </a>
+                </div>
+              );
+            })}
           </div>
-        </div>{" "}
+        </div>
+
         <div className="text-center mb-5">
           <h1>
             <Link
@@ -295,7 +317,7 @@ function BookCafe() {
         </div>
       </section>
 
-      {/* ==================== CHANGED SECTION STARTS HERE ==================== */}
+      {/* ==================== CATEGORIES ==================== */}
       <section className="catagories" id="catagories">
         <h1 className="heading">
           Product<span>Categories</span>
@@ -305,7 +327,6 @@ function BookCafe() {
             <img src={Fic} alt="Fiction and literature" />
             <h3>Fiction & Literature </h3>
             <p>Up to 80% off</p>
-            {/* CHANGED: Replaced <a> with <Link> */}
             <Link to="/allbooks#fiction-literature" className="btn">
               Shop now
             </Link>
@@ -314,7 +335,6 @@ function BookCafe() {
             <img src={mystery} alt="mystery" />
             <h3>Mystery & Thrillers</h3>
             <p>Up to 50% off</p>
-            {/* CHANGED: Replaced <a> with <Link> */}
             <Link to="/allbooks#mystery-thrillers" className="btn">
               Shop now
             </Link>
@@ -323,7 +343,6 @@ function BookCafe() {
             <img src={skill} alt="skill" />
             <h3>Skill Development</h3>
             <p>Up to 60% off</p>
-            {/* CHANGED: Replaced <a> with <Link> */}
             <Link to="/allbooks#skill-development" className="btn">
               Shop now
             </Link>
@@ -332,16 +351,14 @@ function BookCafe() {
             <img src={novel} alt="novel" />
             <h3>Novels</h3>
             <p>Up to 40% off</p>
-            {/* CHANGED: Replaced <a> with <Link> */}
             <Link to="/allbooks#novels" className="btn">
               Shop now
             </Link>
           </div>
         </div>
       </section>
-      {/* ==================== CHANGED SECTION ENDS HERE ==================== */}
 
-
+      {/* ==================== WRITERS ==================== */}
       <section className="writer" id="writer">
         <h1 className="heading">
           Best <span>Writers</span>
@@ -389,10 +406,9 @@ function BookCafe() {
               View More
             </a>
           </div>
-
-
         </div>
       </section>
+
       <footer className="footer bg-dark text-light py-4">
         <div className="container">
           <div className="row">
@@ -434,9 +450,7 @@ function BookCafe() {
           </div>
         </div>
       </footer>
-
     </body>
-
   );
 }
 

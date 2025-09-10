@@ -1,117 +1,282 @@
-/* Container for all books */
-.view-all-books {
-  font-family: 'Arial', sans-serif;
-  padding: 20px;
-  background-color: #f4f4f9;
-  color: #333;
-  max-width: 1200px; /* Limit the width of the content */
-  margin: 0 auto; /* Center the content */
+/* ===========================
+   View All Books — Modern UI
+   =========================== */
+
+/* Theme tokens */
+:root {
+  --bg: #f6f7fb;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --card: #ffffff;
+  --border: #e5e7eb;
+  --primary: #ff6f61;
+  --primary-600: #ff5848;
+  --primary-700: #ff4b3a;
+  --accent: #6366f1;          /* for subtle accents */
+  --shadow-sm: 0 4px 10px rgba(0,0,0,.06);
+  --shadow-md: 0 10px 20px rgba(0,0,0,.08);
+  --radius: 14px;
 }
 
-/* Cart summary at the top */
+/* Container for all books */
+.view-all-books {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+  padding: 28px 20px 48px;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(99,102,241,.08), transparent 40%),
+    radial-gradient(1000px 600px at 110% 10%, rgba(99,102,241,.06), transparent 40%),
+    var(--bg);
+  color: var(--text);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Cart summary pill */
 .cart-summary {
-  padding: 10px 20px;
-  font-size: 18px;
-  font-weight: bold;
-  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 999px;
   text-align: center;
   cursor: pointer;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease;
+  margin: 10px 0 26px;
+  background: linear-gradient(180deg, #fff, #fafafa);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: transform .15s ease, box-shadow .25s ease, border-color .25s ease;
+  color: var(--text);
 }
 
 .cart-summary:hover {
-  box-shadow: #777;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  border-color: #d1d5db;
 }
 
-/* Main heading */
-h1 {
+/* Main section titles */
+.view-all-books h1 {
   text-align: center;
-  margin-bottom: 40px;
-  font-size: 36px;
-  color: #333;
+  margin: 18px 0 28px;
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: .2px;
 }
 
-/* Grid container for book sections */
+/* Section wrapper */
 .book-section {
-  margin-bottom: 40px;
+  margin-bottom: 44px;
 }
 
-/* Category section title */
+/* Section subtitle */
 .section-title {
-  font-size: 28px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 20px;
+  font-size: clamp(18px, 2.2vw, 22px);
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 auto 18px;
   text-align: center;
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(99,102,241,.08);
+  border: 1px dashed rgba(99,102,241,.25);
 }
 
-/* Grid layout for each section of books */
+/* Books grid */
 .book-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));  /* Adjusts based on screen size */
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 22px;
 }
 
-/* Individual book card styling */
+/* ========== Book Card ========== */
 .book-card {
-  background-color: white;
-  border-radius: 10px;
+  background: var(--card);
+  border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  padding: 16px;
   text-align: center;
-  transition: transform 0.3s ease;
+  transition: transform .18s ease, box-shadow .25s ease, border-color .25s ease;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
 }
 
 .book-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: #d1d5db;
 }
 
+/* Cover image */
 .book-card img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 10px;
-  margin-bottom: 15px;
+  width: 100%;
+  aspect-ratio: 3 / 4;         /* keeps a nice book shape */
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  box-shadow: 0 8px 22px rgba(0,0,0,.06);
 }
 
+/* Titles */
 .book-card h2 {
-  font-size: 24px;
-  color: #333;
-  margin: 10px 0;
+  font-size: 20px;
+  color: var(--text);
+  margin: 4px 0 4px;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;       /* clamp long titles */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .book-card h3 {
-  font-size: 18px;
-  color: #666;
-  margin: 5px 0;
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0 0 8px;
+  font-weight: 600;
 }
 
+/* Meta text */
 .book-card p {
   font-size: 14px;
-  color: #777;
+  color: var(--muted);
   line-height: 1.6;
-  margin: 10px 0;
+  margin: 6px 0;
 }
 
 .book-card p strong {
-  color: #333;
+  color: var(--text);
 }
 
-/* Add to Cart button styling */
+/* Rating row — styles Stars() output and the count */
+.book-card p [aria-label^="rating"] {
+  color: #f59e0b;              /* amber for stars */
+  font-size: 16px;
+  letter-spacing: 1px;
+  margin-right: 6px;
+  vertical-align: -1px;
+}
+
+/* Details link (button style) */
+.details-link {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin: 10px 0 8px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, #fff, #fafafa);
+  color: #374151;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition: background .2s ease, transform .15s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+.details-link:hover,
+.details-link:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  border-color: #d1d5db;
+  outline: none;
+}
+
+/* Add to Cart button */
 .book-card button {
-  background-color: #ff6f61;
+  background: linear-gradient(180deg, var(--primary), var(--primary-600));
   color: white;
   border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 30px;
+  padding: 11px 18px;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 12px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 6px 16px rgba(255, 111, 97, .35);
+  transition: transform .15s ease, box-shadow .25s ease, filter .2s ease;
+  margin-top: auto; /* push to bottom so cards align nicely */
 }
 
 .book-card button:hover {
-  background-color: #ff4b3a;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(255, 111, 97, .45);
+  filter: brightness(1.02);
+}
+
+.book-card button:active {
+  transform: translateY(0);
+}
+
+/* Focus visibility for accessibility */
+.details-link:focus-visible,
+.book-card button:focus-visible,
+.cart-summary:focus-visible {
+  outline: 3px solid rgba(99,102,241,.35);
+  outline-offset: 2px;
+}
+
+/* Subtle separators between big sections */
+#fiction-literature,
+#mystery-thrillers,
+#skill-development,
+#novels {
+  padding-top: 4px;
+  border-top: 1px dashed rgba(0,0,0,.08);
+}
+
+/* ===========================
+   Responsive tweaks
+   =========================== */
+@media (max-width: 768px) {
+  .view-all-books {
+    padding: 18px 16px 36px;
+  }
+
+  .book-grid {
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .book-card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .book-card img {
+    border-radius: 10px;
+  }
+}
+
+/* ===========================
+   Optional subtle dark mode
+   (auto if user prefers)
+   =========================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a;
+    --text: #e5e7eb;
+    --muted: #9ca3af;
+    --card: #111827;
+    --border: #1f2937;
+    --shadow-sm: 0 4px 10px rgba(0,0,0,.5);
+    --shadow-md: 0 10px 24px rgba(0,0,0,.6);
+  }
+
+  .section-title {
+    background: rgba(99,102,241,.14);
+    border-color: rgba(99,102,241,.35);
+  }
+
+  .details-link {
+    background: linear-gradient(180deg, #0f172a, #0b1224);
+    color: #e5e7eb;
+  }
 }

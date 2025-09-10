@@ -1,0 +1,91 @@
+.details-page {
+  max-width: 1000px;
+  margin: 50px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.cover {
+  width: 200px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.meta {
+  flex: 1;
+}
+
+.meta h2 {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.meta p {
+  font-size: 18px;
+  margin: 5px 0;
+}
+
+.price, .pubdate {
+  font-weight: bold;
+}
+
+.desc, .reviews, .add-review {
+  margin-top: 30px;
+}
+
+.review-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.review {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+}
+
+.review-head {
+  font-weight: bold;
+}
+
+.comment {
+  margin-top: 5px;
+}
+
+.add-review form {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-review label {
+  margin-bottom: 10px;
+}
+
+.add-review textarea {
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.add-review .btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.add-review .btn:hover {
+  background-color: #0056b3;
+}

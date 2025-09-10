@@ -1,18 +1,32 @@
 // models/Book.js
+const mongoose = require('mongoose');
 
-const mongoose = require("mongoose");
+const reviewSchema = new mongoose.Schema(
+  {
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    name: { type: String, required: true },       // reviewer display name
+    rating: { type: Number, required: true, min: 1, max: 5 },
+    comment: { type: String, default: '' },
+  },
+  { timestamps: true }
+);
 
-const bookSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  author: { type: String, required: true },
-  description: String,
-  publishDate: Date,
-  coverImage: String,
-  price: { type: Number, required: true },
-  category: { type: String, required: true },  // category is a required field
-  createdAt: { type: Date, default: Date.now },
-});
+const bookSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },       // aka name
+    author: { type: String, required: true },
+    description: { type: String, default: '' },
+    category: { type: String, default: 'General' },
+    price: { type: Number, required: true, default: 0 },
+    publishDate: { type: Date },
+    coverImageUrl: { type: String, default: '' },
 
-const Book = mongoose.model("Book", bookSchema);
+    // NEW:
+    rating: { type: Number, required: true, default: 0 },      // average
+    numReviews: { type: Number, required: true, default: 0 },
+    reviews: [reviewSchema],
+  },
+  { timestamps: true }
+);
 
-module.exports = Book;
+module.exports = mongoose.model('Book', bookSchema);

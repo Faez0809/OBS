@@ -12,6 +12,7 @@ import Cart from "./Cart/Cart";
 import Order from "./Order/Order";
 import Success from "./success/Success";
 import Failed from "./failed/Failed";
+import BookDetails from "./BookDetails/BookDetails.jsx"; // Import BookDetails component
 
 function App() {
   return (
@@ -36,6 +37,9 @@ function App() {
             <Route path="/checkout" element={<Order />} />
             <Route path="/success" element={<Success />} />
             <Route path="/failed" element={<Failed />} />
+
+            {/* BookDetails Route */}
+            <Route path="/bookdetails/:bookId" element={<BookDetails />} />
           </Routes>
         </BrowserRouter>
       </CartProvider>
@@ -44,6 +48,7 @@ function App() {
 }
 
 export default App;
+
 
 /* faez*/
 
