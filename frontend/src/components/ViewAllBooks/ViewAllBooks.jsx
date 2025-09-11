@@ -1,11 +1,12 @@
 // src/components/books/ViewAllBooks.jsx
 
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import "./ViewAllBooks.css";
 import { CartContext } from "../../context/CartContext";
 import Cart from "../Cart/Cart";
 import { useLocation, Link, useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 import logo from "../random/DisplayPhoto.jpg";
 
 // small helper to draw ★ stars from average rating (0..5)
@@ -22,6 +23,10 @@ const Stars = ({ value = 0 }) => {
   );
 };
 
+Stars.propTypes = {
+  value: PropTypes.number,
+};
+
 const ViewAllBooks = () => {
   const [books, setBooks] = useState([]);
   const [showCart, setShowCart] = useState(false);
@@ -35,7 +40,7 @@ const ViewAllBooks = () => {
     if (!location.hash) {
       window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     }
-  }, [location.pathname]);
+  }, [location.pathname, location.hash]);
 
   // If there is a hash, scroll to that section once content is ready
   useEffect(() => {
@@ -46,7 +51,7 @@ const ViewAllBooks = () => {
         if (Array.isArray(parsed) && parsed.length) {
           setBooks(parsed);
         }
-      } catch {}
+      } catch { /* ignore cache parse errors */ }
     }
 
     const fetchBooks = async () => {
@@ -72,7 +77,6 @@ const ViewAllBooks = () => {
     }
   }, [location.hash, books]);
 
-  const toggleCart = () => setShowCart((prev) => !prev);
 
   // Prefetch cover images to reduce perceived loading
   useEffect(() => {
@@ -222,12 +226,21 @@ const ViewAllBooks = () => {
       <div style={{ height: 80 }} />
 
       <div className="view-all-books">
-
+        <div className="books-hero">
+          <h1>All Books</h1>
+          <p>Browse our complete collection and discover your next favorite read.</p>
+          <div className="hero-stats">
+            <span className="stat-pill">Total books: {allBooks.length}</span>
+            <a className="pill-link" href="#fiction-literature">Fiction & Literature</a>
+            <a className="pill-link" href="#mystery-thrillers">Mystery & Thrillers</a>
+            <a className="pill-link" href="#skill-development">Skill Development</a>
+            <a className="pill-link" href="#novels">Novels</a>
+          </div>
+        </div>
 
         {showCart && <Cart onClose={() => setShowCart(false)} />}
 
         <div id="all-books">
-          <h1>All Books</h1>
           {renderBooks(allBooks, "All Books")}
         </div>
 

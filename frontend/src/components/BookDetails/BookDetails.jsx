@@ -1,19 +1,26 @@
 // src/components/BookDetails/BookDetails.jsx
 
-import React, { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useMemo, useState, useContext } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./BookDetails.css"; // Add styles if necessary
+import { CartContext } from "../../context/CartContext";
+import Cart from "../Cart/Cart";
+import logo from "../random/DisplayPhoto.jpg";
 
 const BookDetails = () => {
   const { id: routeId, bookId } = useParams(); // support both /books/:id and /bookdetails/:bookId
   const resolvedId = routeId || bookId;
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [ratingInput, setRatingInput] = useState(5);
   const [commentInput, setCommentInput] = useState("");
+  const { addToCart, cart } = useContext(CartContext);
+  const [showCart, setShowCart] = useState(false);
+  const navigate = useNavigate();
+  const isLoggedIn = !!localStorage.getItem("token");
 
   useEffect(() => {
     const fetchBookDetails = async () => {
@@ -37,7 +44,7 @@ const BookDetails = () => {
               return setLoading(false);
             }
           }
-        } catch {}
+        } catch {/* ignore cache errors */}
         console.error("Error fetching book details:", err);
         setBook(null);
         setError("Failed to load book details.");
@@ -68,7 +75,7 @@ const BookDetails = () => {
         alert("Please login to submit a review.");
         return;
       }
-      const res = await axios.post(
+      await axios.post(
         `http://127.0.0.1:3001/api/books/${resolvedId}/reviews`,
         { rating: ratingInput, comment: commentInput },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -98,7 +105,79 @@ const BookDetails = () => {
   }
 
   return (
-    <div className="details-page">
+    <div>
+      <nav>
+        <a href="#" className="logo">
+          <img src={logo} alt="logo" />
+        </a>
+        <ul className="menu">
+          <li>
+            <Link to="/">Homepage</Link>
+          </li>
+          <li>
+            <a href="/#featured">Featured</a>
+          </li>
+          <li>
+            <Link to="/allbooks">Books</Link>
+          </li>
+          <li>
+            <a href="/#catagories">Categories</a>
+          </li>
+          <li>
+            <a href="/#writer">Writer</a>
+          </li>
+
+          {!isLoggedIn && (
+            <>
+              <li id="Registerr">
+                <Link to="/register">Register</Link>
+              </li>
+              <li id="Loginn">
+                <Link to="/login">Login</Link>
+              </li>
+            </>
+          )}
+
+          {isLoggedIn && (
+            <li id="Logoutt">
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  localStorage.removeItem("token");
+                  alert("You have been logged out.");
+                  navigate("/login");
+                }}
+              >
+                Logout
+              </a>
+            </li>
+          )}
+
+          <li
+            onClick={() => setShowCart((p) => !p)}
+            style={{
+              cursor: "pointer",
+              color: "#fff",
+              fontWeight: "500",
+              marginLeft: "1rem",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            🛒 <span style={{ marginLeft: "6px" }}>Cart: {cart.length} items</span>
+          </li>
+        </ul>
+        <a href="#" className="siteName">
+          Book Cafe
+        </a>
+      </nav>
+
+      <div style={{ height: 80 }} />
+
+      {showCart && <Cart onClose={() => setShowCart(false)} />}
+
+      <div className="details-page">
       <div className="top">
         <img
           className="cover"
@@ -109,14 +188,17 @@ const BookDetails = () => {
         <div className="meta">
           <h2>{book.title}</h2>
           <p>by {book.author}</p>
+          <div className="badges">
+            <span className="badge rating-badge">⭐ {averageRating ? averageRating.toFixed(1) : "0.0"} ({book.reviews?.length || 0})</span>
+            {book.category && <span className="badge category-badge">{book.category}</span>}
+            <span className="badge date-badge">{book.publishDate ? new Date(book.publishDate).toLocaleDateString() : "No date"}</span>
+          </div>
           <p className="price">Price: {book.price} Tk</p>
-          <p className="pubdate">
-            Publish Date: {book.publishDate ? new Date(book.publishDate).toLocaleDateString() : "-"}
-          </p>
-          <p>Category: {book.category}</p>
-          <p>
-            <strong>Rating:</strong> {averageRating ? averageRating.toFixed(1) : "0.0"} ({book.reviews?.length || 0})
-          </p>
+
+          <div className="meta-actions">
+            <button className="btn-primary" onClick={() => addToCart(book)}>Add to Cart</button>
+            <button className="btn-secondary" onClick={() => window.history.back()}>Back</button>
+          </div>
         </div>
       </div>
 
@@ -177,6 +259,7 @@ const BookDetails = () => {
         ) : (
           <p>No reviews yet.</p>
         )}
+      </div>
       </div>
     </div>
   );
