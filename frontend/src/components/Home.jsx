@@ -55,10 +55,20 @@ function BookCafe() {
 
   // fetch all books once, so "featured" can pull real rating/review/ids
   useEffect(() => {
+    const cached = sessionStorage.getItem("all_books_cache");
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed)) setBooks(parsed);
+      } catch {}
+    }
+
     const fetchBooks = async () => {
       try {
-        const res = await axios.get("http://127.0.0.1:3001/api/books/list");
-        setBooks(res.data || []);
+        const res = await axios.get("http://127.0.0.1:3001/api/books/list", { headers: { "Cache-Control": "no-cache" } });
+        const data = res.data || [];
+        setBooks(data);
+        sessionStorage.setItem("all_books_cache", JSON.stringify(data));
       } catch (e) {
         console.error("Home: could not load books list", e);
         setBooks([]);
@@ -126,6 +136,27 @@ function BookCafe() {
       coverImage: book.coverImage || book.coverImageUrl || "",
     });
   };
+
+  // Precise offset scroll for fixed navbar
+  useEffect(() => {
+    const onClick = (e) => {
+      const target = e.target.closest('a[href^="#"]');
+      if (!target) return;
+      const href = target.getAttribute('href');
+      if (!href || href === '#' ) return;
+      const id = href.slice(1);
+      const el = document.getElementById(id);
+      if (el) {
+        e.preventDefault();
+        const nav = document.querySelector('nav');
+        const offset = (nav?.offsetHeight || 0) + 20; // add small gap
+        const top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    };
+    document.addEventListener('click', onClick);
+    return () => document.removeEventListener('click', onClick);
+  }, []);
 
   return (
     <body>

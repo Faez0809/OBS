@@ -28,10 +28,30 @@ const ViewAllBooks = () => {
   const location = useLocation();
 
   useEffect(() => {
+    // On first arrival to /allbooks without a hash, force scroll to top
+    if (!location.hash) {
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    }
+  }, [location.pathname]);
+
+  // If there is a hash, scroll to that section once content is ready
+  useEffect(() => {
+    const cached = sessionStorage.getItem("all_books_cache");
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length) {
+          setBooks(parsed);
+        }
+      } catch {}
+    }
+
     const fetchBooks = async () => {
       try {
-        const res = await axios.get("http://127.0.0.1:3001/api/books/list");
-        setBooks(res.data || []);
+        const res = await axios.get("http://127.0.0.1:3001/api/books/list", { headers: { "Cache-Control": "no-cache" } });
+        const data = res.data || [];
+        setBooks(data);
+        sessionStorage.setItem("all_books_cache", JSON.stringify(data));
       } catch (err) {
         console.error("Error fetching books:", err);
         setBooks([]);
@@ -50,6 +70,20 @@ const ViewAllBooks = () => {
   }, [location.hash, books]);
 
   const toggleCart = () => setShowCart((prev) => !prev);
+
+  // Prefetch cover images to reduce perceived loading
+  useEffect(() => {
+    if (!books || books.length === 0) return;
+    const imgEls = books
+      .map((b) => b.coverImage)
+      .filter(Boolean)
+      .slice(0, 20); // prefetch first 20 to be safe
+    imgEls.forEach((src) => {
+      const img = new Image();
+      img.loading = "eager";
+      img.src = src;
+    });
+  }, [books]);
 
   // Groups
   const allBooks = books;

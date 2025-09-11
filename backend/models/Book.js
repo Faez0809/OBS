@@ -19,6 +19,7 @@ const bookSchema = new mongoose.Schema(
     category: { type: String, default: 'General' },
     price: { type: Number, required: true, default: 0 },
     publishDate: { type: Date },
+    coverImage: { type: String, default: '' },
     coverImageUrl: { type: String, default: '' },
 
     // NEW:

@@ -74,16 +74,18 @@ const deleteBook = async (req, res) => {
 // Get single book by ID (with reviews)
 const getBookById = async (req, res) => {
   try {
-    // Ensure the bookId passed in the URL is cast to ObjectId
-    const bookId = mongoose.Types.ObjectId(req.params.id);  // Convert to ObjectId for MongoDB query
-    const book = await Book.findById(bookId);
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ message: "Invalid book ID" });
+    }
+    const book = await Book.findById(id);
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
-    res.json(book);  // Return the book details
+    res.json(book);
   } catch (err) {
     console.error("Error fetching book:", err);
-    res.status(400).json({ message: "Invalid book ID" });  // If invalid ID, return an error message
+    res.status(500).json({ message: "Failed to fetch book" });
   }
 };
 
@@ -91,7 +93,13 @@ const getBookById = async (req, res) => {
 const addBookReview = async (req, res) => {
   try {
     const { rating, comment } = req.body;
-    const book = await Book.findById(req.params.id);
+    const { id } = req.params;
+
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ message: "Invalid book ID" });
+    }
+
+    const book = await Book.findById(id);
 
     if (!book) {
       return res.status(404).json({ message: "Book not found" });

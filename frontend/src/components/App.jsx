@@ -38,7 +38,9 @@ function App() {
             <Route path="/success" element={<Success />} />
             <Route path="/failed" element={<Failed />} />
 
-            {/* BookDetails Route */}
+            {/* Book details routes */}
+            <Route path="/books/:id" element={<BookDetails />} />
+            {/* Backward-compat old path */}
             <Route path="/bookdetails/:bookId" element={<BookDetails />} />
           </Routes>
         </BrowserRouter>

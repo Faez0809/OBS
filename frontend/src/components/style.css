@@ -23,6 +23,23 @@ ul{
 a{
     text-decoration: none;
 }
+.root, html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 120px; /* account for fixed navbar height */
+}
+
+/* Smooth section locking when scrolling to anchors */
+/* Removed scroll snap; using JS precise offset scrolling for nav links */
+
+/* Ensure anchor targets are not hidden behind fixed nav */
+section[id],
+.hero,
+.featured,
+.product,
+.catagories,
+.writer {
+    scroll-margin-top: 120px;
+}
 .main{
     width: 100%;
     height: 100vh;
@@ -119,8 +136,10 @@ nav{
 */
 /* featured  */
 .featured{
-    padding: 120px;
-    margin-top: -100px;
+    padding: 120px 60px 60px;
+    margin: 0;
+    min-height: calc(100vh - 120px);
+    box-sizing: border-box;
 }
 .heading{
     text-align: center;
@@ -128,6 +147,7 @@ nav{
     padding-bottom: 3rem;
     font-size: 3rem;
     color: #000;
+    margin-top: 0;
 }
 .heading span{
     background-color: #231e1e;
@@ -194,8 +214,10 @@ nav{
     margin-bottom: 2rem;
 }
 .product{
-    margin: 100px;
-    margin-top: -100px;
+    margin: 0;
+    padding: 120px 60px 60px;
+    min-height: calc(100vh - 120px);
+    box-sizing: border-box;
 }
 .wrapper{
     display: grid;
@@ -237,8 +259,10 @@ nav{
 }
 /* catagaries */
 .catagories{
-    margin: 100px;
-
+    margin: 0;
+    padding: 120px 60px 60px;
+    min-height: calc(100vh - 120px);
+    box-sizing: border-box;
 }
 .catagories .box-container{
     display: grid;
@@ -273,8 +297,10 @@ nav{
     padding: 1rem 0;
 }
 .writer{
-    margin: 100px;
-    margin-top: -100px;
+    margin: 0;
+    padding: 120px 60px 60px;
+    min-height: calc(100vh - 120px);
+    box-sizing: border-box;
 }
 .writer .box-container{
     display: grid;
