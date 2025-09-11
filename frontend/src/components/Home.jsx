@@ -16,7 +16,7 @@ import payment from "./random/payment.webp";
 import delivary from "./random/delivary.avif";
 import Origin from "./random/Origin.jpg";
 import logo from "./random/DisplayPhoto.jpg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -49,6 +49,7 @@ function BookCafe() {
   const [showCart, setShowCart] = useState(false);
   const [books, setBooks] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
 
   // auth flag for nav
   const isLoggedIn = !!localStorage.getItem("token");
@@ -137,7 +138,7 @@ function BookCafe() {
     });
   };
 
-  // Precise offset scroll for fixed navbar
+  // Smooth scroll to sections (like ViewAllBooks)
   useEffect(() => {
     const onClick = (e) => {
       const target = e.target.closest('a[href^="#"]');
@@ -145,18 +146,27 @@ function BookCafe() {
       const href = target.getAttribute('href');
       if (!href || href === '#' ) return;
       const id = href.slice(1);
+      e.preventDefault();
       const el = document.getElementById(id);
       if (el) {
-        e.preventDefault();
-        const nav = document.querySelector('nav');
-        const offset = (nav?.offsetHeight || 0);
-        const top = el.getBoundingClientRect().top + window.pageYOffset - offset;
-        window.scrollTo({ top, behavior: 'smooth' });
+        el.scrollIntoView({ behavior: "smooth" });
       }
     };
+
     document.addEventListener('click', onClick);
     return () => document.removeEventListener('click', onClick);
   }, []);
+
+  // Handle hash in URL on page load (like ViewAllBooks)
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace("#", "");
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [location.hash]);
 
   return (
     <body>

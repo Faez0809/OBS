@@ -38,11 +38,19 @@ a{
 /* Ensure anchor targets are not hidden behind fixed nav */
 section[id],
 .hero,
-.featured,
-.product,
+.product {
+    scroll-margin-top: calc(var(--nav-height) - 135px);
+}
+
+/* Featured section needs more scroll down */
+.featured {
+    scroll-margin-top: calc(var(--nav-height) - 175px);
+}
+
+/* Categories and writer need slight adjustment */
 .catagories,
 .writer {
-    scroll-margin-top: calc(var(--nav-height) + 20px);
+    scroll-margin-top: calc(var(--nav-height) - 145px);
 }
 .main{
     width: 100%;
@@ -58,6 +66,8 @@ section[id],
     background-position: right bottom;
     padding-top: var(--nav-height);
 }
+
+/* Home section visibility controlled by JavaScript for cross-page navigation */
 nav{
     display: flex;
     justify-content: space-between;
@@ -142,7 +152,7 @@ nav{
 */
 /* featured  */
 .featured{
-    padding: var(--nav-height) 60px 60px;
+    padding: 60px;
     margin: 0;
     box-sizing: border-box;
 }
@@ -220,7 +230,7 @@ nav{
 }
 .product{
     margin: 0;
-    padding: var(--nav-height) 60px 60px;
+    padding: 60px;
     box-sizing: border-box;
 }
 .wrapper{
@@ -264,7 +274,7 @@ nav{
 /* catagaries */
 .catagories{
     margin: 0;
-    padding: var(--nav-height) 60px 60px;
+    padding: 60px;
     box-sizing: border-box;
 }
 .catagories .box-container{
@@ -301,7 +311,7 @@ nav{
 }
 .writer{
     margin: 0;
-    padding: var(--nav-height) 60px 60px;
+    padding: 60px;
     box-sizing: border-box;
 }
 .writer .box-container{
