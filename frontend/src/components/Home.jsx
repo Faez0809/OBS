@@ -48,6 +48,9 @@ function BookCafe() {
   const { addToCart, cart } = useContext(CartContext);
   const [showCart, setShowCart] = useState(false);
   const [books, setBooks] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -138,6 +141,31 @@ function BookCafe() {
     });
   };
 
+  // Search functionality
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    if (query.trim() === "") {
+      setSearchResults([]);
+      setShowSearchResults(false);
+      return;
+    }
+
+    const results = books.filter(book => 
+      book.title.toLowerCase().includes(query.toLowerCase()) ||
+      book.author.toLowerCase().includes(query.toLowerCase())
+    );
+    
+    setSearchResults(results);
+    setShowSearchResults(true);
+  };
+
+  const handleBookSelect = (book) => {
+    setSearchQuery("");
+    setSearchResults([]);
+    setShowSearchResults(false);
+    navigate(`/allbooks#${book.category.toLowerCase().replace(/\s+/g, '-')}`);
+  };
+
   // Smooth scroll to sections (like ViewAllBooks)
   useEffect(() => {
     const onClick = (e) => {
@@ -168,6 +196,18 @@ function BookCafe() {
     }
   }, [location.hash]);
 
+  // Close search results when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.search-container')) {
+        setShowSearchResults(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
     <body>
       <section className="main" id="home">
@@ -175,6 +215,47 @@ function BookCafe() {
           <a href="#" className="logo">
             <img src={logo} alt="logo" />
           </a>
+          
+          {/* Search Box */}
+          <div className="search-container">
+            <div className="search-box">
+              <input
+                type="text"
+                placeholder="Search books or authors..."
+                value={searchQuery}
+                onChange={(e) => handleSearch(e.target.value)}
+                onFocus={() => setShowSearchResults(searchResults.length > 0)}
+                className="search-input"
+              />
+              <div className="search-icon">🔍</div>
+            </div>
+            
+            {/* Search Results Dropdown */}
+            {showSearchResults && searchResults.length > 0 && (
+              <div className="search-results">
+                {searchResults.slice(0, 5).map((book) => (
+                  <div
+                    key={book._id}
+                    className="search-result-item"
+                    onClick={() => handleBookSelect(book)}
+                  >
+                    <img src={book.coverImage} alt={book.title} className="search-result-img" />
+                    <div className="search-result-info">
+                      <h4>{book.title}</h4>
+                      <p>by {book.author}</p>
+                      <span className="search-result-price">BDT {book.price} taka</span>
+                    </div>
+                  </div>
+                ))}
+                {searchResults.length > 5 && (
+                  <div className="search-result-more">
+                    +{searchResults.length - 5} more results
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
           <ul className="menu">
             <li>
               <a href="#home" className="active">

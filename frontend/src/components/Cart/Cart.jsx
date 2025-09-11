@@ -121,7 +121,7 @@ const Cart = ({ onClose }) => {
                       type="text"                          // Changed from number to text
                       inputMode="numeric"                   // Makes the keyboard show numbers (on mobile)
                       value={item.quantity === "" ? "" : item.quantity}  // Allow empty if cleared
-                      onChange={(e) => handleQuantityChange(e, item.book._id)}  // Handle input change
+                      onChange={(e) => handleQuantityChange(e, item.book._id)}  // Handle input 
                       className="quantity-input"  // Custom styling for the input field
                     />
 
