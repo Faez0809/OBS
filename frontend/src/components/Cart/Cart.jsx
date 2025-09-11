@@ -139,9 +139,6 @@ const Cart = ({ onClose }) => {
             ))}
           </div>
 
-          <div className="cart-summary">
-            <h3>Total Price: {getTotalPrice().toFixed(2)} Tk</h3>
-          </div>
 
           <button
             className="checkout-btn"

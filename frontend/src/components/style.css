@@ -3,6 +3,10 @@
     src: url('../Fonts/iran_sans_bold.woff') format('woff');
 }
 
+:root{
+    --nav-height: 80px;
+}
+
 @font-face {
     font-family: 'iran_sans_light';
     src: url('../Fonts/iran_sans_light.woff') format('woff');
@@ -25,7 +29,7 @@ a{
 }
 .root, html {
     scroll-behavior: smooth;
-    scroll-padding-top: 120px; /* account for fixed navbar height */
+    scroll-padding-top: calc(var(--nav-height) + 20px); /* account for fixed navbar height */
 }
 
 /* Smooth section locking when scrolling to anchors */
@@ -38,7 +42,7 @@ section[id],
 .product,
 .catagories,
 .writer {
-    scroll-margin-top: 120px;
+    scroll-margin-top: calc(var(--nav-height) + 20px);
 }
 .main{
     width: 100%;
@@ -52,6 +56,7 @@ section[id],
     position: relative;
 
     background-position: right bottom;
+    padding-top: var(--nav-height);
 }
 nav{
     display: flex;
@@ -64,8 +69,9 @@ nav{
     top: 0;
     left: 0;
     width: 100%;
+    height: var(--nav-height);
     box-sizing: border-box;
-    padding: 10px 50px;
+    padding: 0 50px;
     box-shadow: 2px 2px 12px rgba(0, 0, 0, .05);
     z-index: 1;
     background-color: #001529;
@@ -136,9 +142,8 @@ nav{
 */
 /* featured  */
 .featured{
-    padding: 120px 60px 60px;
+    padding: var(--nav-height) 60px 60px;
     margin: 0;
-    min-height: calc(100vh - 120px);
     box-sizing: border-box;
 }
 .heading{
@@ -215,8 +220,7 @@ nav{
 }
 .product{
     margin: 0;
-    padding: 120px 60px 60px;
-    min-height: calc(100vh - 120px);
+    padding: var(--nav-height) 60px 60px;
     box-sizing: border-box;
 }
 .wrapper{
@@ -260,8 +264,7 @@ nav{
 /* catagaries */
 .catagories{
     margin: 0;
-    padding: 120px 60px 60px;
-    min-height: calc(100vh - 120px);
+    padding: var(--nav-height) 60px 60px;
     box-sizing: border-box;
 }
 .catagories .box-container{
@@ -298,8 +301,7 @@ nav{
 }
 .writer{
     margin: 0;
-    padding: 120px 60px 60px;
-    min-height: calc(100vh - 120px);
+    padding: var(--nav-height) 60px 60px;
     box-sizing: border-box;
 }
 .writer .box-container{

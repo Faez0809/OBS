@@ -5,7 +5,8 @@ import axios from "axios";
 import "./ViewAllBooks.css";
 import { CartContext } from "../../context/CartContext";
 import Cart from "../Cart/Cart";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
+import logo from "../random/DisplayPhoto.jpg";
 
 // small helper to draw ★ stars from average rating (0..5)
 const Stars = ({ value = 0 }) => {
@@ -26,6 +27,8 @@ const ViewAllBooks = () => {
   const [showCart, setShowCart] = useState(false);
   const { cart, addToCart } = useContext(CartContext);
   const location = useLocation();
+  const navigate = useNavigate();
+  const isLoggedIn = !!localStorage.getItem("token");
 
   useEffect(() => {
     // On first arrival to /allbooks without a hash, force scroll to top
@@ -148,36 +151,105 @@ const ViewAllBooks = () => {
   );
 
   return (
-    <div className="view-all-books">
-      <div className="cart-summary" onClick={toggleCart}>
-        🛒 Cart: {cart.length} items
-      </div>
+    <div>
+      <nav>
+        <a href="#" className="logo">
+          <img src={logo} alt="logo" />
+        </a>
+        <ul className="menu">
+          <li>
+            <Link to="/">Homepage</Link>
+          </li>
+          <li>
+            <a href="/#featured">Featured</a>
+          </li>
+          <li>
+            <Link className="active" to="/allbooks">Books</Link>
+          </li>
+          <li>
+            <a href="/#catagories">Categories</a>
+          </li>
+          <li>
+            <a href="/#writer">Writer</a>
+          </li>
 
-      {showCart && <Cart onClose={() => setShowCart(false)} />}
+          {!isLoggedIn && (
+            <>
+              <li id="Registerr">
+                <Link to="/register">Register</Link>
+              </li>
+              <li id="Loginn">
+                <Link to="/login">Login</Link>
+              </li>
+            </>
+          )}
 
-      <div id="all-books">
-        <h1>All Books</h1>
-        {renderBooks(allBooks, "All Books")}
-      </div>
+          {isLoggedIn && (
+            <li id="Logoutt">
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  localStorage.removeItem("token");
+                  alert("You have been logged out.");
+                  navigate("/login");
+                }}
+              >
+                Logout
+              </a>
+            </li>
+          )}
 
-      <div id="fiction-literature">
-        <h1>Fiction & Literature</h1>
-        {renderBooks(fictionBooks, "Fiction & Literature")}
-      </div>
+          <li
+            onClick={() => setShowCart((p) => !p)}
+            style={{
+              cursor: "pointer",
+              color: "#fff",
+              fontWeight: "500",
+              marginLeft: "1rem",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            🛒 <span style={{ marginLeft: "6px" }}>Cart: {cart.length} items</span>
+          </li>
+        </ul>
+        <a href="#" className="siteName">
+          Book Cafe
+        </a>
+      </nav>
 
-      <div id="mystery-thrillers">
-        <h1>Mystery & Thrillers</h1>
-        {renderBooks(mysteryBooks, "Mystery & Thrillers")}
-      </div>
+      <div style={{ height: 80 }} />
 
-      <div id="skill-development">
-        <h1>Skill Development</h1>
-        {renderBooks(skillBooks, "Skill Development")}
-      </div>
+      <div className="view-all-books">
 
-      <div id="novels">
-        <h1>Novels</h1>
-        {renderBooks(novelBooks, "Novels")}
+
+        {showCart && <Cart onClose={() => setShowCart(false)} />}
+
+        <div id="all-books">
+          <h1>All Books</h1>
+          {renderBooks(allBooks, "All Books")}
+        </div>
+
+        <div id="fiction-literature">
+          <h1>Fiction & Literature</h1>
+          {renderBooks(fictionBooks, "Fiction & Literature")}
+        </div>
+
+        <div id="mystery-thrillers">
+          <h1>Mystery & Thrillers</h1>
+          {renderBooks(mysteryBooks, "Mystery & Thrillers")}
+        </div>
+
+        <div id="skill-development">
+          <h1>Skill Development</h1>
+          {renderBooks(skillBooks, "Skill Development")}
+        </div>
+
+        <div id="novels">
+          <h1>Novels</h1>
+          {renderBooks(novelBooks, "Novels")}
+        </div>
       </div>
     </div>
   );

@@ -103,21 +103,6 @@ const Order = () => {
         </div>
         {/* Other address fields... */}
 
-        <div className="cart-summary">
-          <h3>Cart Summary</h3>
-          {cart.map((item) => (
-            <div className="cart-item" key={item.book._id}>
-              <img
-                src={item.book.coverImage}
-                alt={item.book.title}
-                className="cart-item-image"
-              />
-              <p>
-                {item.book.title} x {item.quantity}
-              </p>
-            </div>
-          ))}
-        </div>
 
         <button className="order-btn" type="submit">
           Place Order

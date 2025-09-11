@@ -1,6 +1,6 @@
 // src/components/Home.jsx
 
-import React, { useContext, useState, useEffect, useMemo } from "react";
+import { useContext, useState, useEffect, useMemo } from "react";
 import "./style.css";
 import FaezImg from "./random/me.jpg";
 import shamsul from "./random/shamsul arefin.jpg";
@@ -121,7 +121,7 @@ function BookCafe() {
         db: findBook("Ansi C"),
       },
     ],
-    [books]
+    [books, findBook]
   );
 
   const pick = (item) => item.db || item.fallback;
@@ -149,7 +149,7 @@ function BookCafe() {
       if (el) {
         e.preventDefault();
         const nav = document.querySelector('nav');
-        const offset = (nav?.offsetHeight || 0) + 20; // add small gap
+        const offset = (nav?.offsetHeight || 0);
         const top = el.getBoundingClientRect().top + window.pageYOffset - offset;
         window.scrollTo({ top, behavior: 'smooth' });
       }
@@ -160,7 +160,7 @@ function BookCafe() {
 
   return (
     <body>
-      <section className="main">
+      <section className="main" id="home">
         <nav>
           <a href="#" className="logo">
             <img src={logo} alt="logo" />
@@ -232,7 +232,7 @@ function BookCafe() {
 
         {showCart && <Cart onClose={() => setShowCart(false)} />}
 
-        <section className="hero" id="home">
+        <section className="hero">
           <div className="hero-overlay"></div>
           <div className="hero-content">
             <h1>
@@ -262,7 +262,7 @@ function BookCafe() {
             <img src={delivary} alt="delivary" />
             <h3>Fast Delivery</h3>
             <p>
-              Swift deliveries, because your next great read shouldn't wait. Get your
+              Swift deliveries, because your next great read shouldn&apos;t wait. Get your
               books in a flash!
             </p>
           </div>
