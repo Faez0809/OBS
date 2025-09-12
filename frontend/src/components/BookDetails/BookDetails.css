@@ -131,3 +131,28 @@
 .star-input button:hover ~ button {
   color: #f59e0b;
 }
+
+/* Login prompt styling */
+.login-prompt {
+  text-align: center;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 2px dashed #dee2e6;
+}
+
+.login-prompt p {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.login-prompt a {
+  color: #d5ad67;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.login-prompt a:hover {
+  text-decoration: underline;
+}

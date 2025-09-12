@@ -9,6 +9,7 @@ const authRoutes = require("./routes/authRoutes");
 const bookRoutes = require("./routes/bookRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
+const writerRoutes = require("./routes/writerRoutes");
 const authMiddleware = require("./middleware/authMiddleware");
 
 // CORS (Bearer token flow doesn't require credentials:true)
@@ -29,6 +30,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/books", bookRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/writers", writerRoutes);
 
 // 🔒 Protected: ALL /api/payment/* requires Authorization: Bearer <token>
 app.use("/api/payment", authMiddleware, paymentRoutes);

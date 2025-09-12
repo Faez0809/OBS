@@ -21,12 +21,19 @@ const Login = () => {
         { email, password }
       );
 
-      // Backend returns: { message: "Success", token }
+      // Backend returns: { message: "Success", token, role }
       if (result?.data?.message === "Success" && result?.data?.token) {
         // Save the JWT for Bearer-authenticated calls (e.g., payment)
         localStorage.setItem("token", result.data.token);
-
-        alert("Login successful!");
+        
+        // Show role-specific login message
+        const role = result.data.role || 'user';
+        if (role === 'admin') {
+          alert("Admin login successful! You can now access the admin panel.");
+        } else {
+          alert("Login successful!");
+        }
+        
         // Go back to intended page (e.g., /cart or /checkout) or Home
         navigate(from, { replace: true });
       } else if (typeof result.data === "string") {

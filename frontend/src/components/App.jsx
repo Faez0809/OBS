@@ -13,6 +13,10 @@ import Order from "./Order/Order";
 import Success from "./success/Success";
 import Failed from "./failed/Failed";
 import BookDetails from "./BookDetails/BookDetails.jsx"; // Import BookDetails component
+import WriterDetails from "./WriterDetails/WriterDetails.jsx"; // Import WriterDetails component
+import StaticWriterDetails from "./StaticWriterDetails/StaticWriterDetails.jsx"; // Import StaticWriterDetails component
+import AdminGuard from "./AdminGuard/AdminGuard.jsx"; // Import AdminGuard component
+import AdminSetup from "./AdminSetup/AdminSetup.jsx"; // Import AdminSetup component
 
 function App() {
   return (
@@ -26,12 +30,17 @@ function App() {
             {/* Auth */}
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/admin-setup" element={<AdminSetup />} />
 
             {/* Backward-compat: /home -> / */}
             <Route path="/home" element={<Navigate to="/" replace />} />
 
             {/* Other routes */}
-            <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/admin" element={
+              <AdminGuard>
+                <AdminPanel />
+              </AdminGuard>
+            } />
             <Route path="/allbooks" element={<AllBooks />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Order />} />
@@ -42,6 +51,10 @@ function App() {
             <Route path="/books/:id" element={<BookDetails />} />
             {/* Backward-compat old path */}
             <Route path="/bookdetails/:bookId" element={<BookDetails />} />
+            
+            {/* Writer details routes */}
+            <Route path="/writers/:id" element={<WriterDetails />} />
+            <Route path="/static-writers/:id" element={<StaticWriterDetails />} />
           </Routes>
         </BrowserRouter>
       </CartProvider>

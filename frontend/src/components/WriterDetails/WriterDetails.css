@@ -1,0 +1,212 @@
+/* WriterDetails.css */
+.writer-details-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+}
+
+.writer-header {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 40px;
+  padding: 30px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.writer-image {
+  width: 250px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+}
+
+.writer-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.writer-info h1 {
+  font-size: 2.5rem;
+  margin: 0 0 15px 0;
+  color: #2c3e50;
+  font-weight: 700;
+}
+
+.writer-description {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #555;
+  margin: 0 0 20px 0;
+  font-style: italic;
+}
+
+.writer-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.nationality-badge {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+}
+
+.genre-badge {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+}
+
+.date-badge {
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+  color: white;
+}
+
+.writer-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.btn-primary {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #d5ad67, #b8941f);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #b8941f, #9a7a1a);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.writer-biography,
+.writer-awards,
+.writer-links,
+.writer-social {
+  margin-bottom: 30px;
+  padding: 25px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.writer-biography h3,
+.writer-awards h3,
+.writer-links h3,
+.writer-social h3 {
+  font-size: 1.5rem;
+  margin: 0 0 15px 0;
+  color: #2c3e50;
+  border-bottom: 3px solid #d5ad67;
+  padding-bottom: 8px;
+}
+
+.writer-biography p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #555;
+  margin: 0;
+}
+
+.awards-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.award-item {
+  padding: 10px 0;
+  font-size: 1.1rem;
+  color: #555;
+  border-bottom: 1px solid #eee;
+}
+
+.award-item:last-child {
+  border-bottom: none;
+}
+
+.website-link {
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #27ae60, #229954);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.website-link:hover {
+  background: linear-gradient(135deg, #229954, #1e8449);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.social-links a {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #6c5ce7, #5f3dc4);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+  background: linear-gradient(135deg, #5f3dc4, #4c63d2);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .writer-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .writer-image {
+    width: 200px;
+    height: 250px;
+    margin: 0 auto;
+  }
+  
+  .writer-info h1 {
+    font-size: 2rem;
+  }
+  
+  .writer-description {
+    font-size: 1.1rem;
+  }
+}

@@ -1,6 +1,7 @@
 // src/components/Home.jsx
 
 import { useContext, useState, useEffect, useMemo } from "react";
+import PropTypes from "prop-types";
 import "./style.css";
 import FaezImg from "./random/me.jpg";
 import shamsul from "./random/shamsul arefin.jpg";
@@ -44,10 +45,15 @@ const Stars = ({ value = 0 }) => {
   );
 };
 
+Stars.propTypes = {
+  value: PropTypes.number,
+};
+
 function BookCafe() {
   const { addToCart, cart } = useContext(CartContext);
   const [showCart, setShowCart] = useState(false);
   const [books, setBooks] = useState([]);
+  const [writers, setWriters] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
@@ -64,7 +70,9 @@ function BookCafe() {
       try {
         const parsed = JSON.parse(cached);
         if (Array.isArray(parsed)) setBooks(parsed);
-      } catch {}
+      } catch {
+        // Ignore cache parse errors
+      }
     }
 
     const fetchBooks = async () => {
@@ -81,19 +89,34 @@ function BookCafe() {
     fetchBooks();
   }, []);
 
-  const toggleCart = () => setShowCart((prev) => !prev);
+  // fetch writers
+  useEffect(() => {
+    const fetchWriters = async () => {
+      try {
+        const res = await axios.get("http://127.0.0.1:3001/api/writers/list");
+        const data = res.data || [];
+        setWriters(data);
+      } catch (e) {
+        console.error("Home: could not load writers list", e);
+        setWriters([]);
+      }
+    };
+    fetchWriters();
+  }, []);
 
-  // Tries to find a DB book by loose title match; fallback returns null
-  const findBook = (needle) =>
-    books.find(
-      (b) =>
-        (b.title || "").toLowerCase().includes(needle.toLowerCase()) ||
-        (b.title || "").toLowerCase() === needle.toLowerCase()
-    ) || null;
+  // const toggleCart = () => setShowCart((prev) => !prev);
 
   // Prepare 3 featured items (prefer DB when available)
-  const featured = useMemo(
-    () => [
+  const featured = useMemo(() => {
+    // Tries to find a DB book by loose title match; fallback returns null
+    const findBook = (needle) =>
+      books.find(
+        (b) =>
+          (b.title || "").toLowerCase().includes(needle.toLowerCase()) ||
+          (b.title || "").toLowerCase() === needle.toLowerCase()
+      ) || null;
+
+    return [
       {
         fallback: {
           _id: "static-ckt",
@@ -124,9 +147,8 @@ function BookCafe() {
         },
         db: findBook("Ansi C"),
       },
-    ],
-    [books, findBook]
-  );
+    ];
+  }, [books]);
 
   const pick = (item) => item.db || item.fallback;
 
@@ -480,7 +502,7 @@ function BookCafe() {
         </div>
       </section>
 
-      {/* ==================== WRITERS ==================== */}
+      {/* ==================== BEST WRITERS ==================== */}
       <section className="writer" id="writer">
         <h1 className="heading">
           Best <span>Writers</span>
@@ -496,9 +518,9 @@ function BookCafe() {
               <i className="fa fa-star"></i>
               <i className="fa fa-star"></i>
             </div>
-            <a href="#" className="btn">
+            <Link to="/static-writers/arif-azad" className="btn">
               View More
-            </a>
+            </Link>
           </div>
           <div className="box">
             <img src={shamsul} alt="shamsul arefin" />
@@ -510,9 +532,9 @@ function BookCafe() {
               <i className="fa fa-star"></i>
               <i className="fa fa-star"></i>
             </div>
-            <a href="#" className="btn">
+            <Link to="/static-writers/shamsul-arefin" className="btn">
               View More
-            </a>
+            </Link>
           </div>
           <div className="box">
             <img src={FaezImg} alt="faez faiz" />
@@ -524,12 +546,42 @@ function BookCafe() {
               <i className="fa fa-star"></i>
               <i className="fa fa-star"></i>
             </div>
-            <a href="#" className="btn newtest">
+            <Link to="/static-writers/faez-mahmud" className="btn newtest">
               View More
-            </a>
+            </Link>
           </div>
         </div>
       </section>
+
+      {/* ==================== ADDITIONAL WRITERS ==================== */}
+      {writers.length > 0 && (
+        <section className="additional-writers" id="additional-writers">
+          <h1 className="heading">
+            More <span>Writers</span>
+          </h1>
+          <div className="box-container">
+            {writers.map((writer) => (
+              <div className="box" key={writer._id}>
+                <img 
+                  src={writer.image || writer.imageUrl || FaezImg} 
+                  alt={writer.name} 
+                />
+                <h3>{writer.name}</h3>
+                <div className="stars">
+                  <i className="fa fa-star"></i>
+                  <i className="fa fa-star"></i>
+                  <i className="fa fa-star"></i>
+                  <i className="fa fa-star"></i>
+                  <i className="fa fa-star"></i>
+                </div>
+                <Link to={`/writers/${writer._id}`} className="btn">
+                  View More
+                </Link>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <footer className="footer bg-dark text-light py-4">
         <div className="container">

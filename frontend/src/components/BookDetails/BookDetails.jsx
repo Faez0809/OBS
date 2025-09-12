@@ -209,38 +209,44 @@ const BookDetails = () => {
 
       <div className="add-review">
         <h3>Leave a rating & feedback</h3>
-        <form onSubmit={submitReview}>
-          <label>
-            Rating:
-            <span className="star-input" aria-label="Set rating">
-              {[1,2,3,4,5].map((r) => (
-                <button
-                  key={r}
-                  type="button"
-                  className={r <= ratingInput ? 'active' : ''}
-                  onClick={() => setRatingInput(r)}
-                  disabled={submitting}
-                  aria-label={`${r} star${r>1?'s':''}`}
-                >
-                  ★
-                </button>
-              ))}
-            </span>
-          </label>
-          <label style={{ marginTop: 12 }}>
-            Feedback:
-            <textarea
-              rows={4}
-              placeholder="Share your thoughts about this book"
-              value={commentInput}
-              onChange={(e) => setCommentInput(e.target.value)}
-              disabled={submitting}
-            />
-          </label>
-          <button className="btn" type="submit" disabled={submitting}>
-            {submitting ? "Submitting..." : "Submit"}
-          </button>
-        </form>
+        {isLoggedIn ? (
+          <form onSubmit={submitReview}>
+            <label>
+              Rating:
+              <span className="star-input" aria-label="Set rating">
+                {[1,2,3,4,5].map((r) => (
+                  <button
+                    key={r}
+                    type="button"
+                    className={r <= ratingInput ? 'active' : ''}
+                    onClick={() => setRatingInput(r)}
+                    disabled={submitting}
+                    aria-label={`${r} star${r>1?'s':''}`}
+                  >
+                    ★
+                  </button>
+                ))}
+              </span>
+            </label>
+            <label style={{ marginTop: 12 }}>
+              Feedback:
+              <textarea
+                rows={4}
+                placeholder="Share your thoughts about this book"
+                value={commentInput}
+                onChange={(e) => setCommentInput(e.target.value)}
+                disabled={submitting}
+              />
+            </label>
+            <button className="btn" type="submit" disabled={submitting}>
+              {submitting ? "Submitting..." : "Submit"}
+            </button>
+          </form>
+        ) : (
+          <div className="login-prompt">
+            <p>Please <Link to="/login">login</Link> to leave a rating and review.</p>
+          </div>
+        )}
       </div>
 
       <div className="reviews">

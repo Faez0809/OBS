@@ -470,6 +470,60 @@ nav{
     color: #666;
     font-size: 1.2rem;
 }
+
+/* Additional Writers Section */
+.additional-writers{
+    margin: 0;
+    padding: 60px;
+    box-sizing: border-box;
+    background-color: #f8f9fa;
+}
+
+.additional-writers .box-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(20rem,1fr));
+    gap: 1.5rem;
+}
+
+.additional-writers .box-container .box{
+    padding: 2rem 1rem;
+    background-color: #fff;
+    outline: .1rem solid rgba(0, 0, 0, .1);
+    outline-offset: -1rem;
+    text-align: center;
+    box-shadow:0 .5rem 1rem rgba(0, 0, 0, .1);
+    transition: .2s linear;
+}
+
+.additional-writers .box-container .box:hover{
+    outline: .1rem solid #000;
+    outline-offset: 0rem;
+}
+
+.additional-writers .box-container .box img{
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    border: .2rem solid #ccc;
+}
+
+.additional-writers .box-container .box h3{
+    font-size: 1.5rem;
+    padding-bottom: .5rem;
+}
+
+.additional-writers .box-container .box .stars i{
+    font-size: 1.3rem;
+    color: orangered;
+    padding: .5rem 0;
+}
+
+.additional-writers .box-container .box p{
+    padding: 1rem 0;
+    line-height: 1.5;
+    color: #666;
+    font-size: 1.2rem;
+}
 .social-media i{
     font-size: 15px;
   
